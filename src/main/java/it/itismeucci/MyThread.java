@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.HashSet;
 import java.util.Set;
 
 public class MyThread extends Thread {
@@ -51,12 +50,15 @@ public class MyThread extends Thread {
                     case "*":    
                         Set<String> keys = u.users.keySet();
                         for (String key : keys) {
-                            //u.users.get(key).out.writeBytes(username + ": " + message + "\n");
+                            u.users.get(key).out.writeBytes(username + ": " + message + "\n");
                         }           
                         break;
                     default:
-                        // Chat singola
-                        break;
+                        if (u.users.containsKey(receiver)) {
+                            u.users.get(receiver).out.writeBytes(username + ": " + message + "\n");
+                        } else {
+                            out.writeBytes("Utente non trovato!\n"); //non previsto il caso in cui non si trova utente
+                        }
                 }
             } while (!receiver.equals("/!"));
             s.close();
