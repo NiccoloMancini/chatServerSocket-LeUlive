@@ -17,8 +17,7 @@ public class MyThread extends Thread {
     }
 
     public void run() {
-        /*try {
-            ArrayList<String> notes = new ArrayList<String>();
+        try {
             BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             DataOutputStream out = new DataOutputStream(s.getOutputStream());
             String result;
@@ -27,7 +26,7 @@ public class MyThread extends Thread {
                 username = in.readLine();
                 result = u.verify(username);
                 out.writeBytes(result + "\n");    
-            } while (result.equals("NO"));
+            } while (result.equals("-"));
             String receive;
             do {
                 receive = in.readLine();
@@ -65,6 +64,6 @@ public class MyThread extends Thread {
             } while (!receive.equals("!"));
         } catch (IOException e) {
             System.out.println("Errore!!");
-        }*/
+        }
     }
 }

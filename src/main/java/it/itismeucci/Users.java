@@ -11,10 +11,10 @@ public class Users {
 
     synchronized public String verify(String username) {
         if (this.users.contains(username)) {
-            return "NO";
+            return "-";
         } else {
             this.users.add(username);
-            return "SI";
+            return "+";
         }
     }
 
