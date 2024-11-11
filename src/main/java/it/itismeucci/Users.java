@@ -1,19 +1,19 @@
 package it.itismeucci;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Users {
-    ArrayList<String> users;
+    HashMap<String, MyThread> users;
 
     public Users() {
-        this.users = new ArrayList<String>();
+        this.users = new HashMap<String, MyThread>();
     }
 
     synchronized public String verify(String username) {
-        if (this.users.contains(username)) {
+        if (this.users.containsKey(username)) {
             return "-";
         } else {
-            this.users.add(username);
+            this.users.containsKey(username);
             return "+";
         }
     }
