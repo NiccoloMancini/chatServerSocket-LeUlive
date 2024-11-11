@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MyThread extends Thread {
     private Socket s;
@@ -36,6 +38,7 @@ public class MyThread extends Thread {
                 result = u.verify(username);
                 out.writeBytes(result + "\n");
             } while (result.equals("-"));
+            u.users.put(username,this);
             String message;
             String receiver;
             do {
@@ -45,8 +48,11 @@ public class MyThread extends Thread {
                     case "/!":
                         u.remove(username);
                         break;
-                    case "*":
-                        // Chat global
+                    case "*":    
+                        Set<String> keys = u.users.keySet();
+                        for (String key : keys) {
+                            //u.users.get(key).out.writeBytes(username + ": " + message + "\n");
+                        }           
                         break;
                     default:
                         // Chat singola
