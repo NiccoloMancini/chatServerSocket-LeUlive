@@ -43,9 +43,9 @@ public class MyThread extends Thread {
                                 u.users.remove(username, this);
                                 Set<String> keys = u.users.keySet();
                                 for (String key : keys) {
-                                    u.users.get(key).out.writeBytes("server\n");
-                                    u.users.get(key).out.writeBytes("#-\n");
-                                    u.users.get(key).out.writeBytes(username + "\n");
+                                    u.users.get(key).sendMessage("server");
+                                    u.users.get(key).sendMessage("#-");
+                                    u.users.get(key).sendMessage(username);
                                 }           
                                 break;
                             case "/+":
@@ -53,13 +53,13 @@ public class MyThread extends Thread {
                                 do {
                                     username = in.readLine();
                                     result = u.verify(username);
-                                    out.writeBytes(result + "\n");
+                                    sendMessage(result);
                                 } while (result.equals("-"));
                                 keys = u.users.keySet();
                                 for (String key : keys) {
-                                    u.users.get(key).out.writeBytes("server\n");
-                                    u.users.get(key).out.writeBytes("#+\n");
-                                    u.users.get(key).out.writeBytes(username + "\n");
+                                    u.users.get(key).sendMessage("server");
+                                    u.users.get(key).sendMessage("#+");
+                                    u.users.get(key).sendMessage(username);
                                 }        
                                 u.users.put(username,this); 
                                 break;
@@ -69,16 +69,16 @@ public class MyThread extends Thread {
                         Set<String> keys = u.users.keySet();
                         keys.remove(username);
                         for (String key : keys) {
-                            u.users.get(key).out.writeBytes("*" + username + "\n");
-                            u.users.get(key).out.writeBytes(message + "\n");
+                            u.users.get(key).sendMessage("*" + username);
+                            u.users.get(key).sendMessage(message);
                         }               
                         break;
                     default:
                         if (u.users.containsKey(receiver)) {
-                            u.users.get(receiver).out.writeBytes(username + "\n");
-                            u.users.get(receiver).out.writeBytes(message + "\n");
+                            u.users.get(receiver).sendMessage(username);
+                            u.users.get(receiver).sendMessage(message);
                         } else {
-                            out.writeBytes("#!\n");
+                            sendMessage("#!");
                         }
                 }
             } while (!receiver.equals("/!"));
