@@ -53,6 +53,7 @@ public class MyThread extends Thread {
                                 do {
                                     username = in.readLine();
                                     result = u.verify(username);
+                                    sendMessage("server");
                                     sendMessage(result);
                                 } while (result.equals("-"));
                                 keys = u.users.keySet();
