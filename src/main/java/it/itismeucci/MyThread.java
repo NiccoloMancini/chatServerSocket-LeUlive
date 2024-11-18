@@ -30,34 +30,54 @@ public class MyThread extends Thread {
 
     public void run() {
         try {
-            String result;
-            String username;
-            do {
-                username = in.readLine();
-                result = u.verify(username);
-                out.writeBytes(result + "\n");
-            } while (result.equals("-"));
-            u.users.put(username,this);
+            String username = "";
             String message;
             String receiver;
             do {
-                message = in.readLine();
                 receiver = in.readLine();
+                message = in.readLine();
                 switch (receiver) {
-                    case "/!":
-                        u.remove(username);
+                    case "server":
+                        switch (message) {
+                            case "/!":
+                                u.users.remove(username, this);
+                                Set<String> keys = u.users.keySet();
+                                for (String key : keys) {
+                                    u.users.get(key).out.writeBytes("server\n");
+                                    u.users.get(key).out.writeBytes("#-\n");
+                                    u.users.get(key).out.writeBytes(username + "\n");
+                                }           
+                                break;
+                            case "/+":
+                                String result;
+                                do {
+                                    username = in.readLine();
+                                    result = u.verify(username);
+                                    out.writeBytes(result + "\n");
+                                } while (result.equals("-"));
+                                keys = u.users.keySet();
+                                for (String key : keys) {
+                                    u.users.get(key).out.writeBytes("server\n");
+                                    u.users.get(key).out.writeBytes("#+\n");
+                                    u.users.get(key).out.writeBytes(username + "\n");
+                                }        
+                                u.users.put(username,this); 
+                                break;
+                        }
                         break;
                     case "*":    
                         Set<String> keys = u.users.keySet();
                         for (String key : keys) {
-                            u.users.get(key).out.writeBytes(username + ": " + message + "\n");
-                        }           
+                            u.users.get(key).out.writeBytes("*" + username + "\n");
+                            u.users.get(key).out.writeBytes(message + "\n");
+                        }               
                         break;
                     default:
                         if (u.users.containsKey(receiver)) {
-                            u.users.get(receiver).out.writeBytes(username + ": " + message + "\n");
+                            u.users.get(receiver).out.writeBytes(username + "\n");
+                            u.users.get(receiver).out.writeBytes(message + "\n");
                         } else {
-                            out.writeBytes("Utente non trovato!\n"); //non previsto il caso in cui non si trova utente
+                            out.writeBytes("#!\n");
                         }
                 }
             } while (!receiver.equals("/!"));
