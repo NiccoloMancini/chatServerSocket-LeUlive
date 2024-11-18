@@ -67,6 +67,7 @@ public class MyThread extends Thread {
                         break;
                     case "*":    
                         Set<String> keys = u.users.keySet();
+                        keys.remove(username);
                         for (String key : keys) {
                             u.users.get(key).out.writeBytes("*" + username + "\n");
                             u.users.get(key).out.writeBytes(message + "\n");
