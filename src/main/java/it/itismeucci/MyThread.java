@@ -34,8 +34,12 @@ public class MyThread extends Thread {
             String message;
             String receiver;
             do {
-                receiver = in.readLine();
-                message = in.readLine();
+                receiver = in.readLine(); /*
+                                           * -> comunicazione globale
+                                           * username -> comunicazione privata
+                                           * server -> funzioni riservate al server (aggiunta-rimozione client)
+                                           */
+                message = in.readLine(); // messaggio da cui capire il tipo di azione da eseguire
                 switch (receiver) {
                     case "server":
                         switch (message) {
@@ -70,7 +74,7 @@ public class MyThread extends Thread {
                                 break;
                         }
                         break;
-                    case "*":
+                    case "*": // comunicazione globale
                         Set<String> keys = u.users.keySet();
                         keys.remove(username);
                         for (String key : keys) {
@@ -78,7 +82,7 @@ public class MyThread extends Thread {
                             u.users.get(key).sendMessage(message);
                         }
                         break;
-                    default:
+                    default: // comunicazione privata tra due client
                         if (u.users.containsKey(receiver)) {
                             u.users.get(receiver).sendMessage(username);
                             u.users.get(receiver).sendMessage(message);
