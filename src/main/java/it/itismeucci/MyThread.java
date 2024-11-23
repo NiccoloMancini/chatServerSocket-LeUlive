@@ -24,7 +24,7 @@ public class MyThread extends Thread {
         }
     }
 
-    public void sendMessage(String msg) throws IOException{
+    public void sendMessage(String msg) throws IOException {
         this.out.writeBytes(msg + "\n");
     }
 
@@ -39,18 +39,22 @@ public class MyThread extends Thread {
                 switch (receiver) {
                     case "server":
                         switch (message) {
-                            case "/!":
+                            case "/!": // disconnessione client
                                 u.users.remove(username, this);
                                 Set<String> keys = u.users.keySet();
                                 for (String key : keys) {
                                     u.users.get(key).sendMessage("server");
                                     u.users.get(key).sendMessage("#-");
                                     u.users.get(key).sendMessage(username);
-                                }           
+                                }
                                 break;
-                            case "/+":
-                                String result;
+                            case "/+": // registrazione client
+                                String result = "";
                                 do {
+                                    if (result.equals("-")) {
+                                        receiver = in.readLine();
+                                        message = in.readLine();
+                                    }
                                     username = in.readLine();
                                     result = u.verify(username);
                                     sendMessage("server");
@@ -61,18 +65,18 @@ public class MyThread extends Thread {
                                     u.users.get(key).sendMessage("server");
                                     u.users.get(key).sendMessage("#+");
                                     u.users.get(key).sendMessage(username);
-                                }        
-                                u.users.put(username,this); 
+                                }
+                                u.users.put(username, this);
                                 break;
                         }
                         break;
-                    case "*":    
+                    case "*":
                         Set<String> keys = u.users.keySet();
                         keys.remove(username);
                         for (String key : keys) {
                             u.users.get(key).sendMessage("*" + username);
                             u.users.get(key).sendMessage(message);
-                        }               
+                        }
                         break;
                     default:
                         if (u.users.containsKey(receiver)) {
