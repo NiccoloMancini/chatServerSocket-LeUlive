@@ -10,7 +10,7 @@ public class Users {
     }
 
     synchronized public String verify(String username) {
-        if (this.users.containsKey(username) && (username.toLowerCase().equals("server")) && username.startsWith("*")) {
+        if (this.users.containsKey(username) || (username.toLowerCase().equals("server")) || username.startsWith("*")) {
             return "-";
         } else {
             return "+";

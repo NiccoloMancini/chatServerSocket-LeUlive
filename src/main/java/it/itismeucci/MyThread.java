@@ -39,7 +39,9 @@ public class MyThread extends Thread {
                                            * username -> comunicazione privata
                                            * server -> funzioni riservate al server (aggiunta-rimozione client)
                                            */
+                System.out.println(receiver);
                 message = in.readLine(); // messaggio da cui capire il tipo di azione da eseguire
+                System.out.println(message);
                 switch (receiver) {
                     case "server":
                         switch (message) {
@@ -60,6 +62,7 @@ public class MyThread extends Thread {
                                         message = in.readLine();
                                     }
                                     username = in.readLine();
+                                    System.out.println(username);
                                     result = u.verify(username);
                                     sendMessage("server");
                                     sendMessage(result);
