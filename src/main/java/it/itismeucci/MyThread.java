@@ -87,7 +87,9 @@ public class MyThread extends Thread {
                             u.users.get(receiver).sendMessage(username);
                             u.users.get(receiver).sendMessage(message);
                         } else {
+                            sendMessage("server");
                             sendMessage("#!");
+                            sendMessage(receiver);
                         }
                 }
             } while (!receiver.equals("/!"));
