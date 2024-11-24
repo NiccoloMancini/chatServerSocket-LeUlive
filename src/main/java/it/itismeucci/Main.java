@@ -7,10 +7,9 @@ import java.net.Socket;
 public class Main {
     public static void main(String[] args) throws IOException {
         ServerSocket ss = new ServerSocket(7934);
-        Users u = new Users();
         while (true) {
             Socket s = ss.accept();
-            MyThread t = new MyThread(s,u);
+            MyThread t = new MyThread(s);
             t.start();
         }
     }

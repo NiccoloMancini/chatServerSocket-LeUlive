@@ -9,13 +9,11 @@ import java.util.Set;
 
 public class MyThread extends Thread {
     private Socket s;
-    private Users u;
     private BufferedReader in;
     private DataOutputStream out;
 
-    public MyThread(Socket s, Users u) {
+    public MyThread(Socket s) {
         this.s = s;
-        this.u = u;
         try {
             this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             this.out = new DataOutputStream(s.getOutputStream());
@@ -42,12 +40,12 @@ public class MyThread extends Thread {
                     case "server":
                         switch (message) {
                             case "/!": // disconnessione client
-                                u.users.remove(username, this);
-                                Set<String> keys = u.users.keySet();
+                                Users.users.remove(username, this);
+                                Set<String> keys = Users.users.keySet();
                                 for (String key : keys) {
-                                    u.users.get(key).sendMessage("server");
-                                    u.users.get(key).sendMessage("#-");
-                                    u.users.get(key).sendMessage(username);
+                                    Users.users.get(key).sendMessage("server");
+                                    Users.users.get(key).sendMessage("#-");
+                                    Users.users.get(key).sendMessage(username);
                                 }
                                 break;
                             case "/+": // registrazione client
@@ -58,39 +56,39 @@ public class MyThread extends Thread {
                                         message = in.readLine();
                                     }
                                     username = in.readLine();
-                                    System.out.println(username);
-                                    result = u.verify(username);
+                                    result = Users.verify(username);
                                     sendMessage(result);
                                 } while (result.equals("-"));
-                                keys = u.users.keySet();
+                                keys = Users.users.keySet();
                                 for (String key : keys) {
-                                    u.users.get(key).sendMessage("server");
-                                    u.users.get(key).sendMessage("#+");
-                                    u.users.get(key).sendMessage(username);
+                                    Users.users.get(key).sendMessage("server");
+                                    Users.users.get(key).sendMessage("#+");
+                                    Users.users.get(key).sendMessage(username);
                                 }
-                                u.users.put(username, this);
+                                Users.users.put(username, this);
                                 break;
                         }
                         break;
                     case "*": // comunicazione globale
-                        Set<String> keys = u.users.keySet();
-                        keys.remove(username);
+                        Set<String> keys = Users.users.keySet();
                         for (String key : keys) {
-                            u.users.get(key).sendMessage("*" + username);
-                            u.users.get(key).sendMessage(message);
+                            if (!key.equals(username)) {
+                                Users.users.get(key).sendMessage("*" + username);
+                                Users.users.get(key).sendMessage(message);
+                            }
                         }
                         break;
                     default: // comunicazione privata tra due client
-                        if (u.users.containsKey(receiver)) {
-                            u.users.get(receiver).sendMessage(username);
-                            u.users.get(receiver).sendMessage(message);
+                        if (Users.users.containsKey(receiver)) {
+                            Users.users.get(receiver).sendMessage(username);
+                            Users.users.get(receiver).sendMessage(message);
                         } else {
                             sendMessage("server");
                             sendMessage("#!");
                             sendMessage(receiver);
                         }
                 }
-            } while (!receiver.equals("/!"));
+            } while (!message.equals("/!"));
             s.close();
         } catch (IOException e) {
             System.out.println("Errore!!");

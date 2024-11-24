@@ -3,21 +3,17 @@ package it.itismeucci;
 import java.util.HashMap;
 
 public class Users {
-    HashMap<String, MyThread> users;
+    static HashMap<String, MyThread> users = new HashMap<>();
 
-    public Users() {
-        this.users = new HashMap<String, MyThread>();
-    }
-
-    synchronized public String verify(String username) {
-        if (this.users.containsKey(username) || (username.toLowerCase().equals("server")) || username.startsWith("*")) {
+    synchronized static public String verify(String username) {
+        if (users.containsKey(username) || (username.toLowerCase().equals("server")) || username.startsWith("*")) {
             return "-";
         } else {
             return "+";
         }
     }
 
-    synchronized public void remove(String username) {
-        this.users.remove(username);
+    synchronized static public void remove(String username) {
+        users.remove(username);
     }
 }
