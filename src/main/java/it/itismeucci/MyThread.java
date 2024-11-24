@@ -34,11 +34,7 @@ public class MyThread extends Thread {
             String message;
             String receiver;
             do {
-                receiver = in.readLine(); /*
-                                           * -> comunicazione globale
-                                           * username -> comunicazione privata
-                                           * server -> funzioni riservate al server (aggiunta-rimozione client)
-                                           */
+                receiver = in.readLine();
                 System.out.println(receiver);
                 message = in.readLine(); // messaggio da cui capire il tipo di azione da eseguire
                 System.out.println(message);
@@ -64,7 +60,6 @@ public class MyThread extends Thread {
                                     username = in.readLine();
                                     System.out.println(username);
                                     result = u.verify(username);
-                                    sendMessage("server");
                                     sendMessage(result);
                                 } while (result.equals("-"));
                                 keys = u.users.keySet();
