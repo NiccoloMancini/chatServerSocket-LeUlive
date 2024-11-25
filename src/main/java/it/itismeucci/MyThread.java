@@ -33,9 +33,7 @@ public class MyThread extends Thread {
             String receiver;
             do {
                 receiver = in.readLine();
-                System.out.println(receiver);
                 message = in.readLine(); // messaggio da cui capire il tipo di azione da eseguire
-                System.out.println(message);
                 switch (receiver) {
                     case "server":
                         switch (message) {
