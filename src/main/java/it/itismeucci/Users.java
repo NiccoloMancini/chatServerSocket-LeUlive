@@ -6,7 +6,7 @@ public class Users {
     static HashMap<String, MyThread> users = new HashMap<>();
 
     synchronized static public String verify(String username) {
-        if (users.containsKey(username) || (username.toLowerCase().equals("server")) || username.startsWith("*")) {
+        if (users.containsKey(username) || (username.toLowerCase().equals("server")) || username.startsWith("*") || (username.equals(""))) {
             return "-";
         } else {
             return "+";
